@@ -1,0 +1,53 @@
+# Infrastructure
+- description: Awesome Infrastructure
+  sinks:
+    - type: dynatrace
+      apikey: 1234
+      tag: custom
+      host: www.host.com
+
+# Product
+- description: Awesome Product
+  product: Awesome Product
+  latency_percentile: 0.95
+  leaders:
+  - juan@owlvey.com
+  
+---
+# members
+- email: pedro@owlvey.com
+  name: pedro doe
+- email: juan@owlvey.com
+  name: juan doe
+---
+# squads
+- name: fenix
+  description: fenix
+  members:
+  - pedro@owlvey.com
+  - juan@owlvey.com
+
+---
+# Journeys
+- description: Tranfers 
+  journey: Tranfers
+  group: Channels
+  avaSlo: 0.99
+  expSlo: 0.99
+  latSlo: 1000
+  avaSla: 0.95
+  latSla: 5000
+  leaders:
+  - pedro@owlvey.com  
+
+---
+# Features 
+- description: Login  
+  feature: Login
+  journeys:
+  - Tranfers
+  squads:
+  - fenix
+  sources:
+  - LoginController::login
+  - LoginController::cookie
