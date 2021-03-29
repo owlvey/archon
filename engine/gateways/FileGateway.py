@@ -15,7 +15,10 @@ class FileGateway:
             infra = data[0][0]
             product = data[1][0]
             members = data[2]
-            return infra, product, members
+            squads = data[3]
+            journeys = data[4]
+            features = data[5]
+            return infra, product, members, squads, journeys, features
 
     def write_app(self, state):
         target = os.path.join(self.dir, './../../wip/docker-compose.yaml')
