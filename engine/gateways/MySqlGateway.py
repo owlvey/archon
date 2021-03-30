@@ -1,19 +1,29 @@
 from datetime import datetime
 from mysql.connector.cursor import MySQLCursorBufferedNamedTuple, RE_SQL_INSERT_STMT
+from pandas.core.frame import DataFrame
 from sqlalchemy import MetaData, Table, String, Column, Text, DateTime, Boolean, Integer, create_engine, ForeignKey
-import mysql.connector
 from sqlalchemy.sql.expression import insert, select
 from sqlalchemy.sql.sqltypes import Float
-
+import sqlalchemy
+import pandas as pd
 
 class MySqlGateway:
 
     metadata = MetaData()
 
+    products_table = Table('Products', metadata, 
+        Column('id', Integer(), primary_key=True),
+        Column('product', String(512), nullable=False),
+        Column('description', String(512), nullable=False),    
+        Column('latency_percentile', Float(), nullable=False),    
+    )
+
+
     members_table = Table('Members', metadata, 
         Column('id', Integer(), primary_key=True),
         Column('name', String(512), nullable=False),
         Column('email', String(512), nullable=False),    
+        Column('nickname', String(512), nullable=False),    
     )
 
     sources_table = Table('Sources', metadata, 
@@ -29,12 +39,17 @@ class MySqlGateway:
         Column('id', Integer(), primary_key=True),
         Column('journey', String(512), nullable=False),
         Column('description', String(512), nullable=False),
-        Column('group', String(512), nullable=False), 
+        Column('family', String(512), nullable=False), 
         Column('avaSlo', Float(), nullable=False),
         Column('expSlo', Float(), nullable=False),
         Column('latSlo', Float(), nullable=False),
         Column('avaSla', Float(), nullable=False),
         Column('latSla', Float(), nullable=False),
+    )
+
+    product_members_table = Table('ProductMembers', metadata, 
+        Column('productId', Integer(), ForeignKey("Products.id")),
+        Column('memberId', Integer(),  ForeignKey("Members.id"))        
     )
     
     journey_members_table = Table('JourneyMembers', metadata, 
@@ -63,7 +78,8 @@ class MySqlGateway:
         Column('sourceId', Integer(), ForeignKey("Sources.id")),        
     )
 
-    def __init__(self, connection) -> None:        
+    def __init__(self, user, password, host, port, database) -> None:        
+        connection = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"  
         self.metadata_engine = create_engine(connection, 
             strategy='mock', executor = self.__metadata_dump)        
         self.engine = create_engine(connection)        
@@ -74,7 +90,8 @@ class MySqlGateway:
         MySqlGateway.metadata.create_all(self.engine)        
     
     def __metadata_dump(self, sql, *multiparams, **params):
-        print(sql.compile(dialect=self.metadata_engine.dialect))           
+        pass
+        #print(sql.compile(dialect=self.metadata_engine.dialect))           
     
     def post_members(self, values: list):
         if values:            
@@ -94,7 +111,7 @@ class MySqlGateway:
             for item in values:
                 r = self.engine.execute(insert(MySqlGateway.squads_table), MySqlGateway.__prepare_no_list(item))
                 for m in item.members:
-                    member_id = next(x[0] for x in members if x[2] == m)         
+                    member_id = self.__get_member(members, m)
                     ins = MySqlGateway.squads_members_table.insert().values(
                          squadId = r.inserted_primary_key, 
                          memberId = member_id)           
@@ -103,7 +120,25 @@ class MySqlGateway:
     
     def post_sources(self, values: list):
         if values:            
-            self.engine.execute(insert(MySqlGateway.sources_table), [ { "source": x} for x in values])
+            self.engine.execute(insert(MySqlGateway.sources_table), [ { "source": x.source} for x in values])
+    
+    def __get_member(self, members, target):
+        try:
+            return next(x[0] for x in members if x[2] == target.email)         
+        except:
+            raise ValueError(f'member not found {target}')
+
+
+    def post_product(self, value):
+        if value:            
+            members = list(self.engine.execute(MySqlGateway.members_table.select()).fetchall())            
+            r = self.engine.execute(insert(MySqlGateway.products_table), MySqlGateway.__prepare_no_list(value))
+            for m in value.leaders:
+                member_id = self.__get_member(members, m)         
+                ins = MySqlGateway.product_members_table.insert().values(
+                        productId = r.inserted_primary_key, 
+                        memberId = member_id)           
+                self.engine.execute(ins)             
     
     def post_journeys(self, values: list):
         if values:            
@@ -111,7 +146,7 @@ class MySqlGateway:
             for item in values:
                 r = self.engine.execute(insert(MySqlGateway.journeys_table), MySqlGateway.__prepare_no_list(item))
                 for m in item.leaders:
-                    member_id = next(x[0] for x in members if x[2] == m)         
+                    member_id = self.__get_member(members, m)
                     ins = MySqlGateway.journey_members_table.insert().values(
                          journeyId = r.inserted_primary_key, 
                          memberId = member_id)           
@@ -127,33 +162,33 @@ class MySqlGateway:
                 r = self.engine.execute(insert(MySqlGateway.features_table), 
                         MySqlGateway.__prepare_no_list(item))
                 for m in item.squads:
-                    squad_id = next(x[0] for x in squads if x[1] == m)         
+                    squad_id = next(x[0] for x in squads if x[1] == m.squad)         
                     ins = MySqlGateway.feature_squads_table.insert().values(
                          featureId = r.inserted_primary_key, 
                          squadId = squad_id)           
                     self.engine.execute(ins)         
 
                 for m in item.sources:
-                    source_id = next(x[0] for x in sources if x[1] == m)         
+                    source_id = next(x[0] for x in sources if x[1] == m.source)         
                     ins = MySqlGateway.feature_sources_table.insert().values(
                          featureId = r.inserted_primary_key, 
                          sourceId = source_id)           
-                    self.engine.execute(ins)             
+                    self.engine.execute(ins)    
+
+    def post_sourceItems(self, df: DataFrame):         
+        df.to_sql(name='SourceItems', con=self.engine, if_exists = 'replace', index=False,
+            dtype={'source': sqlalchemy.types.VARCHAR(length=512)}
+        )
+    def post_data(self, df: DataFrame, name):         
+        dtype = dict()
+        if 'source' in df.columns :
+            dtype['source'] = sqlalchemy.types.VARCHAR(length=512)
+            df.to_sql(name=name, con=self.engine, if_exists = 'replace',
+                dtype=dtype,
+                index=False)
+
+    
 
             
 
-    def post_products(self, values: list):
-        mydb = self.__create_connection()
-        try:
-            cursor = mydb.cursor()    
-            sql = "INSERT INTO DynatraceEntries (source, start, end, total, availability, experience, latency) VALUES (%s, %s, %s, %s, %s, %s, %s)"            
-            for val in values:
-                cursor.execute(sql, val.to_tuple())  
-            mydb.commit()
-        finally:
-            try:
-                if cursor:
-                    cursor.close()
-            finally:
-                pass
-            mydb.close()
+            

@@ -5,5 +5,12 @@ class SquadEntity:
         self.description = None
         self.members = list()    
     
+    def load_members(self, items):
+        temp = self.members
+        self.members = list()
+        for item in temp:            
+            self.members.append(next(x for x in items if x.email == item))
+
+    
 
 

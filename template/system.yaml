@@ -5,7 +5,16 @@
       apikey: 1234
       tag: custom
       host: www.host.com
-
+  states:
+    - type: mysql
+      connection: "mysql+pymysql://root:thefalcon123@127.0.0.1:3306/owlveydb"
+  visualizations:
+    - type: grafana
+      host: http://localhost:3000
+      user: admin
+      password: owlvey
+      
+---
 # Product
 - description: Awesome Product
   product: Awesome Product
@@ -14,27 +23,13 @@
   - juan@owlvey.com
   
 ---
-# members
-- email: pedro@owlvey.com
-  name: pedro doe
-- email: juan@owlvey.com
-  name: juan doe
----
-# squads
-- name: fenix
-  description: fenix
-  members:
-  - pedro@owlvey.com
-  - juan@owlvey.com
-
----
 # Journeys
 - description: Tranfers 
   journey: Tranfers
-  group: Channels
+  family: Channels
   avaSlo: 0.99
   expSlo: 0.99
-  latSlo: 1000
+  latSlo: 1000 
   avaSla: 0.95
   latSla: 5000
   leaders:
