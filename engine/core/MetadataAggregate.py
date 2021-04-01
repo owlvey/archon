@@ -8,7 +8,7 @@ class MetadataAggregate:
         self.system = system
 
     def execute(self): 
-        indicators = features_to_indicators_dataframe(self.system.features)[['feature', 'source']]
-        journey_feature = journeys_to_features_dataframe(self.system.journeys)[['journey', 'feature']]
+        indicators = features_to_indicators_dataframe(self.system.features)
+        journey_feature = journeys_to_features_dataframe(self.system.journeys)
         return journey_feature, indicators
         

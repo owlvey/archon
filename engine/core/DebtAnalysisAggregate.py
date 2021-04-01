@@ -43,18 +43,8 @@ class DebtAnalasysAggregate:
     
     def __build_features_hourly(self, features_source_df, hourly_source):        
         hourly_source = hourly_source[['source', 'start', 'ava_prop', 'exp_prop', 'lat']].copy()
-        merged = features_source_df.merge(hourly_source, left_on='source',  right_on='source', how='left')
-        
-        output_hourly = merged.groupby(['feature', 'start' ]).aggregate(
-        {
-                "avaSlo": 'max',                 
-                'expSlo': 'max', 
-                'latSlo': 'min',
-                'ava_prop': 'min',
-                'exp_prop': 'min',
-                'lat': 'max'
-        }).reset_index()
-
+        output_hourly = features_source_df.merge(hourly_source, left_on='source',  right_on='source', how='left')
+               
         output_hourly['ava_debt'] = output_hourly.apply(lambda x: 0 if x['ava_prop'] >= x['avaSlo'] else x['avaSlo'] - x['ava_prop'], axis=1)
         output_hourly['exp_debt'] = output_hourly.apply(lambda x: 0 if x['exp_prop'] >= x['expSlo'] else x['expSlo'] - x['exp_prop'], axis=1)
         output_hourly['lat_debt'] = output_hourly.apply(lambda x: 0 if x['lat'] <= x['latSlo'] else x['lat'] - x['latSlo'], axis=1)       
