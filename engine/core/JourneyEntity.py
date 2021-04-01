@@ -13,6 +13,7 @@ class JourneyEntity:
         self.avaSla = None
         self.latSla = None
         self.leaders = list()     
+        self.features = list()
 
     def load_members(self, items):
         temp = self.leaders
@@ -26,3 +27,13 @@ def journeys_to_dataframe(items: List[JourneyEntity]):
     for item in items:
         data.append([item.journey, item.family, item.avaSlo, item.expSlo, item.latSlo])
     return pd.DataFrame(data, columns=['journey', 'family', 'avaSlo', 'expSlo', 'latSlo'])
+
+def journeys_to_features_dataframe(items: List[JourneyEntity]):
+    data = list()    
+    for item in items:        
+        for feature in item.features:
+            data.append([item.family, item.journey, item.avaSlo, item.expSlo, item.latSlo, feature.feature])
+    
+    df = pd.DataFrame(data, columns=['family', 'journey', 'avaSlo', 'expSlo', 'latSlo', 'feature'])    
+    return df
+

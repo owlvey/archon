@@ -183,9 +183,11 @@ class MySqlGateway:
         dtype = dict()
         if 'source' in df.columns :
             dtype['source'] = sqlalchemy.types.VARCHAR(length=512)
-            df.to_sql(name=name, con=self.engine, if_exists = 'replace',
-                dtype=dtype,
-                index=False)
+        if 'feature' in df.columns :
+            dtype['feature'] = sqlalchemy.types.VARCHAR(length=512)
+        df.to_sql(name=name, con=self.engine, if_exists = 'replace',
+            dtype=dtype,
+            index=False)
 
     
 

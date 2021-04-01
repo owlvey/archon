@@ -1,5 +1,5 @@
 from engine.core.SourceEntity import SourceEntity
-from engine.core.FeatureEntity import FeatureEntity, features_to_dataframe
+from engine.core.FeatureEntity import FeatureEntity
 from engine.core.JourneyEntity import JourneyEntity, journeys_to_dataframe
 from engine.core.SquadEntity import SquadEntity
 from engine.core.DockerComponseEntity import DockerComposeEntity
@@ -67,11 +67,7 @@ class SystemEntity:
     def __str__(self) -> str:
         return self.__dict__.__str__()
 
-    def build_metadata_frame(self):
-        journeys_df = journeys_to_dataframe(self.journeys)
-        features, squads_df = features_to_dataframe(self.features)
-        all = journeys_df.merge(features, left_on='Journey', right_on='Journey', how='inner')
-        return all, squads_df
+    
 
 
 

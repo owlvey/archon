@@ -32,13 +32,17 @@ class FeatureEntity:
     def load_members(self, journeys, squads, sources):
         temp = self.journeys
         self.journeys = list()
-        for item in temp:            
-            self.journeys.append(next(x for x in journeys if x.journey == item))   
+        for item in temp:          
+            journey = next(x for x in journeys if x.journey == item)
+            journey.features.append(self)
+            self.journeys.append(journey)   
 
         temp = self.squads
         self.squads = list()
         for item in temp:            
-            self.squads.append(next(x for x in squads if x.squad == item))   
+            squad = next(x for x in squads if x.squad == item)
+            squad.features.append(self)
+            self.squads.append(squad)   
         
         temp = self.sources
         self.sources = list()
@@ -51,27 +55,17 @@ class FeatureEntity:
             
         
 
-        
 
-
-def features_to_dataframe(items: List[FeatureEntity]):
-    journey_feature = list()
-    feature_squad = list()
-    feature_source = list()
-    data = list()
-    for item in items:
-        for journey in item.journeys:
-            journey_feature.append([journey, item.feature])
-        for squad in item.squads:
-            feature_squad.append(item.feature, squad)
+def features_to_indicators_dataframe(items: List[FeatureEntity]):
+    feature_source = list()    
+    for item in items:        
         for source in item.sources:
-            feature_source.append([item.feature, source])
+            feature_source.append([item.feature, item.avaSlo, item.expSlo, item.latSlo, source.source])
+    
+    feature_df = pd.DataFrame(feature_source, columns=['feature', 'avaSlo', 'expSlo', 'latSlo', 'source'])    
+    return feature_df
 
-    journey_df = pd.DataFrame(journey_feature, columns=['journey', 'feature'])
-    squad_df = pd.DataFrame(journey_feature, columns=['feature', 'squad'])
-    feature_df = pd.DataFrame(journey_feature, columns=['feature', 'source'])
-    features_all = journey_df.merge(feature_df, left_on='feature', right_on='feature', how='inner')
-    return features_all
+
 
 
     
