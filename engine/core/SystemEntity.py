@@ -7,9 +7,8 @@ from engine.core.ProductEntity import ProductEntity
 from engine.core.MemberEntity import MemberEntity
 from engine.core.InfrastructureEntity import InfrastructureEntity
 from engine.core.StateUtil import StateUtil
-import pandas
-from typing import List
 import itertools
+
 
 class SystemEntity: 
     def __init__(self):
@@ -29,7 +28,6 @@ class SystemEntity:
                    journey_states: list,
                    features_states: list):
         self.infrastructure.load_state(infrastructure)
-        
 
         for state in members_states:
             item = MemberEntity()
@@ -47,7 +45,7 @@ class SystemEntity:
             
         for state in journey_states:
             item = JourneyEntity()
-            StateUtil.load_from_state(item, state)
+            item.load_from_state(self.infrastructure.warning_zone, state)
             item.load_members(self.members)
             self.journeys.append(item)
             

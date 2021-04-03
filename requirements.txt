@@ -1,6 +1,6 @@
 numpy
 pandas
 yamale
+pymysql
 mysql-connector-python
 sqlalchemy
-

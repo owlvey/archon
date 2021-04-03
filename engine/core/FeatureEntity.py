@@ -25,9 +25,8 @@ class FeatureEntity:
         self.avaSla = max([x.avaSla for x in self.journeys])
         self.latSla = max([x.latSla for x in self.journeys])
 
-        for source in self.sources:
-            source.measure_slo()
-
+        for item in self.sources:
+            item.measure_slo()
 
     def load_members(self, journeys, squads, sources):
         temp = self.journeys

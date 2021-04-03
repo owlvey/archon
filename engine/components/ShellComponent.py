@@ -1,6 +1,6 @@
 from engine.core.MetadataAggregate import MetadataAggregate
 from engine.core.graphs.DebtGraphAnalysisAggregate import DebtGraphAnalysisAggregate
-from engine.core.DebtAnalysisAggregate import DebtAnalasysAggregate
+from engine.core.DebtAnalysisAggregate import DebtAnalysisAggregate
 from engine.gateways.MySqlGateway import MySqlGateway
 from engine.gateways.FileGateway import FileGateway
 from engine.core.SystemEntity import SystemEntity
@@ -26,8 +26,7 @@ class ShellComponent:
         for item in self.system_entity.infrastructure.states:                        
             self.states_gateways.append(                              
                 MySqlGateway(item['user'], item['password'], item['host'], item['port'], item['database'])
-            )               
-         
+            )
         
     def __save_metadata(self):        
         for gateway in self.states_gateways:
@@ -38,17 +37,13 @@ class ShellComponent:
             gateway.post_journeys(self.system_entity.journeys)            
             gateway.post_sources(self.system_entity.sources)
             gateway.post_features(self.system_entity.features)
-
     
     def __save_data(self):        
         dfs = list()
         for item in self.system_entity.infrastructure.sinks:
-            df = self.file_gateway.read_data(item['target'])
+            df = self.file_gateway.read_data(item['target'], item['nrows'])
             dfs.append(df)
         df = pd.concat(dfs)
-        for gateway in self.states_gateways:
-            gateway.post_sourceItems(df)
-        
         return df
             
     def run(self):
@@ -61,22 +56,20 @@ class ShellComponent:
 
         data = self.__save_data()
 
-        agg = DebtAnalasysAggregate(data, self.system_entity)
-        groups_hourly, squad_hourly, journey_hourly, hourly_feature, hourly_source = agg.execute()
+        agg = DebtAnalysisAggregate(data, self.system_entity)
+        squad_hourly, journey_hourly, hourly_feature, hourly_source = agg.execute()
 
         meta_agg = MetadataAggregate(self.system_entity)
         metadata_journey_features, metadata_feature_sources = meta_agg.execute()
 
-        graph =  DebtGraphAnalysisAggregate(self.system_entity, hourly_source)
+        graph = DebtGraphAnalysisAggregate(self.system_entity, hourly_source)
         feature_source_graph = graph.execute()
 
         for gateway in self.states_gateways:            
-            gateway.post_data(journey_hourly, 'HourlyJourney')
-            gateway.post_data(hourly_feature, 'HourlyFeature')
-            gateway.post_data(hourly_source, 'HourlySource')
+            gateway.post_data(journey_hourly, 'HourlyJourney', index_names=['journey', 'feature', 'source', 'start'])
+            gateway.post_data(hourly_feature, 'HourlyFeature', index_names=['feature', 'source', 'start'])
+            gateway.post_data(hourly_source, 'HourlySource', index_names=['source', 'start'])
             gateway.post_data(squad_hourly, 'HourlySquad')
-            gateway.post_data(groups_hourly, 'HourlyGroup')           
-            gateway.post_data(feature_source_graph, 'GraphFeatureSource')                       
             gateway.post_data(metadata_feature_sources, 'FeatureSourcesMap')
             gateway.post_data(metadata_journey_features, 'JourneyFeaturesMap')
         

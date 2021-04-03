@@ -8,10 +8,24 @@ class FileGateway:
     def __init__(self):
         self.dir = pathlib.Path(__file__).parent.absolute()
 
-    def read_data(self, target):
+    def read_data(self, target, nrows=None, hourly_days=None):
         headers = ['source', 'start', 'end', 'total', 'ava', 'exp', 'lat']
-        df = pd.read_csv(target, 
-            sep=";",  names=headers, parse_dates=['start', 'end'], low_memory=False)
+        dtype = {
+            'total': int,
+            'ava': int,
+            'exp': int,
+            'lat': float
+        }
+        if nrows:
+            df = pd.read_csv(target, sep=";",  names=headers, parse_dates=['start', 'end'], low_memory=False,
+                             nrows=nrows, dtype=dtype)
+        else:
+            df = pd.read_csv(target, sep=";", names=headers,
+                             parse_dates=['start', 'end'], low_memory=False, dtype=dtype)
+
+        if df.isnull().values.any():
+            raise ValueError('nan in data frame')
+
         return df
 
     def read_metadata_v2(self): 
