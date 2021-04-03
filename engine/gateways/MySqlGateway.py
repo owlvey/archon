@@ -112,6 +112,8 @@ class MySqlGateway:
 
     def post_data(self, df: DataFrame, name, index_names=list()):
         dtype = dict()
+        if 'squad' in df.columns:
+            dtype['squad'] = sqlalchemy.types.VARCHAR(length=512)
         if 'source' in df.columns:
             dtype['source'] = sqlalchemy.types.VARCHAR(length=512)
         if 'feature' in df.columns:

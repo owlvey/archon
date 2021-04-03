@@ -25,6 +25,8 @@ class JourneyEntity:
 
     def load_from_state(self, warning_zone: float, state):
         StateUtil.load_from_state(self, state)
+
+    def apply_warning_zone(self, warning_zone):
         self.avaSlo = JourneyEntity.__measure_warning(self.avaSlo, warning_zone)
         self.expSlo = JourneyEntity.__measure_warning(self.expSlo, warning_zone)
         self.latSlo = self.latSlo - (self.latSlo * warning_zone)

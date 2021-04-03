@@ -61,7 +61,15 @@ class SystemEntity:
         
         for state in self.features:            
             state.load_members(self.journeys, self.squads, self.sources)
-    
+
+    def measure_slo(self):
+        for feature in self.features:
+            feature.measure_slo()
+
+    def apply_warning_zone(self):
+        for journey in self.journeys:
+            journey.apply_warning_zone(self.infrastructure.warning_zone)
+
     def __str__(self) -> str:
         return self.__dict__.__str__()
 

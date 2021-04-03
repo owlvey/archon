@@ -16,7 +16,7 @@ class FeatureEntity:
         self.avaSla = 0
         self.latSla = 0
 
-    def __measure_slo(self):
+    def measure_slo(self):
         if not self.journeys:
             raise ValueError('Feature without journeys: {}'.format(self.feature))
         self.avaSlo = max([x.avaSlo for x in self.journeys])
@@ -48,11 +48,7 @@ class FeatureEntity:
         for item in temp:       
             target = next(x for x in sources if x.source == item)             
             target.features.append(self)
-            self.sources.append(target)   
-        
-        self.__measure_slo()
-            
-        
+            self.sources.append(target)
 
 
 def features_to_indicators_dataframe(items: List[FeatureEntity]):
