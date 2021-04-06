@@ -1,0 +1,23 @@
+# Infrastructure
+- description: Awesome Infrastructure
+  hourly_days: 21
+  warning_zone: 0.1  
+  metadata:
+    type: filesystem
+    target: /Users/Gregory/nike/nike_discovery/metadata
+  sinks:
+    - type: filesystem
+      target: /Users/Gregory/nike/nike_discovery/wip/Digital Factory.csv
+  states:
+    - type: mysql
+      host: localhost
+      port: 3306
+      user: root
+      password: thefalcon123
+      database: owlveydb      
+  visualizations:
+    - type: grafana
+      host: http://localhost:3000
+      user: admin
+      password: owlvey
+      

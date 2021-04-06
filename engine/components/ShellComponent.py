@@ -7,6 +7,7 @@ from engine.gateways.MySqlGateway import MySqlGateway
 from engine.gateways.FileGateway import FileGateway
 from engine.core.SystemEntity import SystemEntity
 import pandas as pd
+import sys
 import json
 
 
@@ -17,13 +18,8 @@ class ShellComponent:
         self.states_gateways = list()        
         self.file_gateway = FileGateway()
     
-    def __load_state(self):
-        infrastructure, product, members, squads, journeys, features = self.file_gateway.read_metadata()
-        self.system_entity.load_state(infrastructure, product, members, squads, journeys, features)        
-    
     def __create_infrastructure(self):
         visual = self.system_entity.infrastructure.visualizations[0]        
-
         for item in self.system_entity.infrastructure.states:
             if item['type'] == 'mysql':
                 self.states_gateways.append(
@@ -33,6 +29,12 @@ class ShellComponent:
                 self.states_gateways.append(FileStateGateway())
             else:
                 raise ValueError('state not found')
+
+    def __load_state(self):
+        infrastructure, product, members, squads, journeys, features = self.file_gateway.read_metadata()
+        self.system_entity.load_state(infrastructure, product, members, squads, journeys, features)        
+    
+    
         
     def __save_metadata(self):        
         for gateway in self.states_gateways:
@@ -47,7 +49,11 @@ class ShellComponent:
     def __load_data(self):
         dfs = list()
         for item in self.system_entity.infrastructure.sinks:
-            df = self.file_gateway.read_data(item['target'], item['nrows'])
+            
+            nrows = sys.maxsize
+            if 'nrows' in item:
+                nrows = int(item['nrows'])
+            df = self.file_gateway.read_data(item['target'], nrows)
             dfs.append(df)
         df = pd.concat(dfs)
         return df
