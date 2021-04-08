@@ -75,6 +75,8 @@ class MySqlGateway:
     def post_journeys(self, values: list):
         if values:
             members = list(self.engine.execute(ORMMetadata.members_table.select()).fetchall())
+            features = list(self.engine.execute(ORMMetadata.features_table.select()).fetchall())
+            
             for item in values:
                 r = self.engine.execute(insert(ORMMetadata.journeys_table), MySqlGateway.__prepare_no_list(item))
                 for m in item.leaders:
@@ -82,6 +84,12 @@ class MySqlGateway:
                     ins = ORMMetadata.journey_members_table.insert().values(
                         journeyId=r.inserted_primary_key,
                         memberId=member_id)
+                    self.engine.execute(ins)
+                for m in item.features:
+                    feature_id = next(x[0] for x in features if x[1] == m.feature)
+                    ins = ORMMetadata.journey_features_table.insert().values(
+                        journeyId=r.inserted_primary_key,
+                        featureId=feature_id)
                     self.engine.execute(ins)
 
     def post_features(self, values: list):

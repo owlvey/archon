@@ -42,9 +42,10 @@ class ShellComponent:
             gateway.post_members(self.system_entity.members)
             gateway.post_product(self.system_entity.product)
             gateway.post_squads(self.system_entity.squads)
-            gateway.post_journeys(self.system_entity.journeys)            
             gateway.post_sources(self.system_entity.sources)
             gateway.post_features(self.system_entity.features)
+            gateway.post_journeys(self.system_entity.journeys)            
+            
     
     def __load_data(self):
         dfs = list()

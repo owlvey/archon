@@ -43,14 +43,19 @@ class ORMMetadata:
                            Column('latSla', Float(), nullable=False),
                            )
 
-    product_members_table = Table('ProductMembers', metadata,
+    product_members_table = Table('ProductLeaders', metadata,
                                   Column('productId', Integer(), ForeignKey("Products.id")),
                                   Column('memberId', Integer(), ForeignKey("Members.id"))
                                   )
 
-    journey_members_table = Table('JourneyMembers', metadata,
+    journey_members_table = Table('JourneyLeaders', metadata,
                                   Column('journeyId', Integer(), ForeignKey("Journeys.id")),
                                   Column('memberId', Integer(), ForeignKey("Members.id"))
+                                  )
+
+    journey_features_table = Table('JourneyFeatures', metadata,
+                                  Column('journeyId', Integer(), ForeignKey("Journeys.id")),
+                                  Column('featureId', Integer(), ForeignKey("Features.id"))
                                   )
 
     squads_members_table = Table('SquadMembers', metadata,
