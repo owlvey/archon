@@ -4,14 +4,13 @@
   warning_zone: 0.1  
   metadata:
     type: filesystem
-    target: /workspace/gregory/owlvey/metadata
+    target: /workspace/metadata
   sinks:
     - type: filesystem
-      target: /workspace/gregory/owlvey/data/
-      nrows: 100000
+      target: /workspace/data/Digital Factory.csv      
   states:
     - type: mysql
-      host: localhost
+      host: 192.168.18.16
       port: 3306
       user: root
       password: thefalcon123

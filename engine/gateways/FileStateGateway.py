@@ -12,6 +12,9 @@ class FileStateGateway:
     def create_metadata_storage(self):
         pass
 
+    def health(self):         
+         pass
+
     def __metadata_dump(self, sql, *multiparams, **params):
         pass
         # print(sql.compile(dialect=self.metadata_engine.dialect))

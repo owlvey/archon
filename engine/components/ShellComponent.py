@@ -18,8 +18,7 @@ class ShellComponent:
         self.states_gateways = list()        
         self.file_gateway = FileGateway()
     
-    def __create_infrastructure(self):
-        visual = self.system_entity.infrastructure.visualizations[0]        
+    def __create_infrastructure(self):        
         for item in self.system_entity.infrastructure.states:
             if item['type'] == 'mysql':
                 self.states_gateways.append(
@@ -33,9 +32,7 @@ class ShellComponent:
     def __load_state(self):
         infrastructure, product, members, squads, journeys, features = self.file_gateway.read_metadata()
         self.system_entity.load_state(infrastructure, product, members, squads, journeys, features)        
-    
-    
-        
+
     def __save_metadata(self):        
         for gateway in self.states_gateways:
             # members first
@@ -45,12 +42,10 @@ class ShellComponent:
             gateway.post_sources(self.system_entity.sources)
             gateway.post_features(self.system_entity.features)
             gateway.post_journeys(self.system_entity.journeys)            
-            
-    
+
     def __load_data(self):
         dfs = list()
         for item in self.system_entity.infrastructure.sinks:
-            
             nrows = sys.maxsize
             if 'nrows' in item:
                 nrows = int(item['nrows'])
@@ -59,6 +54,13 @@ class ShellComponent:
         df = pd.concat(dfs)
         return df
             
+    def health(self):
+        self.__load_state()
+        self.__create_infrastructure()      
+        for gateway in self.states_gateways:
+            gateway.health()
+
+
     def run(self):
         self.__load_state()
         self.__create_infrastructure()       

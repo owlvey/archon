@@ -17,16 +17,21 @@ class DebtHourlyAnalysisAggregate:
 
     @staticmethod
     def __measure_debt(output_hourly):
+        output_hourly['ava_debt'] = 0
+        output_hourly['exp_debt'] = 0
+        output_hourly['lat_debt'] = 0
+        if output_hourly.empty:
+            return
+
         output_hourly['ava_debt'] = output_hourly.apply(
             lambda x: 0 if x['ava_prop'] >= x['avaSlo'] else x['avaSlo'] - x['ava_prop'], axis=1)
         output_hourly['exp_debt'] = output_hourly.apply(
             lambda x: 0 if x['exp_prop'] >= x['expSlo'] else x['expSlo'] - x['exp_prop'], axis=1)
         output_hourly['lat_debt'] = output_hourly.apply(
             lambda x: 0 if x['lat'] <= x['latSlo'] else x['lat'] - x['latSlo'], axis=1)
-        
 
     def __build_source_hourly(self):
-        anchor = datetime.now() - timedelta(days=self.system.infrastructure.hourly_days)
+        anchor = self.data['start'].max() - timedelta(days=self.system.infrastructure.hourly_days)
         corpus = self.data[self.data['start'] >= anchor].copy()
 
         output_hourly = corpus.groupby(

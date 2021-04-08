@@ -22,6 +22,11 @@ class MySqlGateway:
         ORMMetadata.metadata.create_all(self.metadata_engine)
         ORMMetadata.metadata.create_all(self.engine)
 
+    def health(self):         
+         with self.engine.connect() as c:
+             c.close()
+       
+
     def __metadata_dump(self, sql, *multiparams, **params):
         pass
         # print(sql.compile(dialect=self.metadata_engine.dialect))
@@ -58,8 +63,8 @@ class MySqlGateway:
     def __get_member(self, members, target):
         try:
             return next(x[0] for x in members if x[2] == target.email)
-        except:
-            raise ValueError(f'member not found {target}')
+        except e:
+            raise ValueError(f'member not found {target}') from e
 
     def post_product(self, value):
         if value:

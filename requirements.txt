@@ -1,6 +1,11 @@
 numpy
+numpy-financial
+numpy_mips64
 pandas
 yamale
 pymysql
 mysql-connector-python
 sqlalchemy
+flask
+requests
+Flask-APScheduler
