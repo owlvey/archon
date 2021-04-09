@@ -15,11 +15,11 @@ jobs:
         - name: list files                                      
           run: ls -la        
         - name: docker build                                      
-          run: docker build -t owlvey-archon:latest .
+          run: docker build -t owlvey-archon .
         - name: docker login
           run: docker login -u="${{ secrets.DOCKER_USERNAME }}" -p="${{ secrets.DOCKER_PASSWORD }}"
         - name: docker tag
           run: |
-            docker tag grafana-owlvey owlvey/archon:latest
-            docker tag grafana-owlvey owlvey/archon:${{ github.sha }}                  
+            docker tag owlvey-archon owlvey/archon:latest
+            docker tag owlvey-archon owlvey/archon:${{ github.sha }}                  
             docker push owlvey/archon
