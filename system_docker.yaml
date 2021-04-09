@@ -7,7 +7,7 @@
     target: /workspace/metadata
   sinks:
     - type: filesystem
-      target: /workspace/data/Digital Factory.csv      
+      target: /workspace/data
   states:
     - type: mysql
       host: owlvey_state
