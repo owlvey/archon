@@ -10,7 +10,7 @@
       target: /workspace/data/Digital Factory.csv      
   states:
     - type: mysql
-      host: 192.168.18.16
+      host: owlvey_state
       port: 3306
       user: root
       password: thefalcon123
