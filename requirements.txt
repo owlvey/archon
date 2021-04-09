@@ -1,4 +1,5 @@
 numpy
+cryptography
 numpy-financial
 numpy_mips64
 pandas
