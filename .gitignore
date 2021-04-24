@@ -131,3 +131,6 @@ dmypy.json
 data/
 
 wip/
+
+template/generate_data.csv
+
