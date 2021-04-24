@@ -4,11 +4,10 @@
   warning_zone: 0.1  
   metadata:
     type: filesystem
-    target: /workspace/gregory/owlvey/metadata
+    target: /Users/Gregory/owlvey/archon/template
   sinks:
     - type: filesystem
-      target: /workspace/gregory/owlvey/data/
-      nrows: 100000
+      target: /Users/Gregory/owlvey/archon/template      
   states:
     - type: mysql
       host: localhost

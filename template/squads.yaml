@@ -1,6 +1,19 @@
-# squads
-- squad: fenix
-  description: fenix
-  members:
-  - pedro@owlvey.com
+- description: Fenix
+  leaders:
   - juan@owlvey.com
+  members:
+  - juan@owlvey.com
+  - luis@owlvey.com
+  - maria@owlvey.com
+  - ana@owlvey.com  
+  squad: Fenix
+
+- description: Valkyrie  
+  leaders:
+  - alex@owlvey.com
+  members:
+  - jhon@owlvey.com
+  - carol@owlvey.com
+  - steve@owlvey.com  
+  squad: Valkyrie
+  

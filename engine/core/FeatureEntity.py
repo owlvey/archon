@@ -1,3 +1,4 @@
+from engine.core.SquadEntity import SquadEntity
 from engine.core.SourceEntity import SourceEntity
 from typing import Collection, List
 from numpy.lib.utils import source
@@ -38,8 +39,8 @@ class FeatureEntity:
 
         temp = self.squads
         self.squads = list()
-        for item in temp:            
-            squad = next(x for x in squads if x.squad == item)
+        for item in temp:                
+            squad = SquadEntity.seek_squad(squads, item)
             squad.features.append(self)
             self.squads.append(squad)   
         

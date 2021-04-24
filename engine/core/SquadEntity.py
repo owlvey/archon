@@ -14,6 +14,14 @@ class SquadEntity:
         self.members = list()
         for item in temp:            
             self.members.append(next(x for x in items if x.email == item))
+        
+    @staticmethod
+    def seek_squad(squads, target):
+        for squad in squads:
+            if squad.squad == target:
+                return squad
+        else:
+            raise ValueError(f"squad not found {target}")
 
 
 def squads_to_features_dataframe(items: List[SquadEntity]):

@@ -1,3 +1,4 @@
+import logging
 from engine.core.DebtHourlyAnalysisAggregate import DebtHourlyAnalysisAggregate
 from engine.core.MetadataAggregate import MetadataAggregate
 from engine.core.graphs.DebtGraphAnalysisAggregate import DebtGraphAnalysisAggregate
@@ -11,12 +12,14 @@ import sys
 import json
 
 
+
 class ShellComponent:
     
     def __init__(self):
         self.system_entity = SystemEntity()
         self.states_gateways = list()        
         self.file_gateway = FileGateway()
+        self.logger = logging.getLogger(__class__.__name__)
     
     def __create_infrastructure(self):        
         for item in self.system_entity.infrastructure.states:
@@ -140,9 +143,11 @@ class ShellComponent:
         squad_hourly, journey_hourly, hourly_feature, hourly_source = agg.execute()
 
         graph = DebtGraphAnalysisAggregate(self.system_entity, hourly_source)
-        feature_source_graph = graph.execute()
+        graph.execute()
 
-        for gateway in self.states_gateways:            
+        for gateway in self.states_gateways:      
+            self.logger.info('writting state journey hourly {}'.format( journey_hourly.shape))
+            self.logger.info('writting state Hourly Source {}'.format( hourly_source.shape))
             gateway.post_data(journey_hourly, 'HourlyJourney', index_names=['journey', 'feature', 'source', 'start'])
             gateway.post_data(hourly_feature, 'HourlyFeature', index_names=['feature', 'source', 'start'])
             gateway.post_data(hourly_source, 'HourlySource', index_names=['source', 'start'])

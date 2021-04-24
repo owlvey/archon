@@ -63,19 +63,18 @@ class MySqlGateway:
     def __get_member(self, members, target):
         try:
             return next(x[0] for x in members if x[2] == target.email)
-        except e:
+        except Exception as e:
             raise ValueError(f'member not found {target}') from e
 
-    def post_product(self, value):
-        if value:
-            members = list(self.engine.execute(ORMMetadata.members_table.select()).fetchall())
-            r = self.engine.execute(insert(ORMMetadata.products_table), MySqlGateway.__prepare_no_list(value))
-            for m in value.leaders:
-                member_id = self.__get_member(members, m)
-                ins = ORMMetadata.product_members_table.insert().values(
-                    productId=r.inserted_primary_key,
-                    memberId=member_id)
-                self.engine.execute(ins)
+    def post_product(self, value):        
+        members = list(self.engine.execute(ORMMetadata.members_table.select()).fetchall())
+        r = self.engine.execute(insert(ORMMetadata.products_table), MySqlGateway.__prepare_no_list(value))
+        for m in value.leaders:
+            member_id = self.__get_member(members, m)
+            ins = ORMMetadata.product_members_table.insert().values(
+                productId=r.inserted_primary_key,
+                memberId=member_id)
+            self.engine.execute(ins)
 
     def post_journeys(self, values: list):
         if values:

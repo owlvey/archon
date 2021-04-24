@@ -20,22 +20,25 @@ class FileGateway:
             return pathlib.Path(os.path.join(pathlib.Path(__file__).parent.absolute(), './../../system.yaml')).absolute()
 
     def read_data(self, target, nrows=None, hourly_days=None):
-        headers = ['source', 'start', 'end', 'total', 'ava', 'exp', 'lat']
-        dtype = dict(total=int, ava=int, exp=int, lat=float)
+        try:
+            headers = ['source', 'start', 'end', 'total', 'ava', 'exp', 'lat']
+            dtype = dict(total=int, ava=int, exp=int, lat=float)
 
-        onlyfiles = [f for f in listdir(target) if isfile(join(target, f))]
-        temp = list()
-        for file in onlyfiles:
-            nrows = sys.maxsize
-            df = pd.read_csv(join(target, file), sep=";",
-                             names=headers, parse_dates=['start', 'end'],
-                             low_memory=False,
-                             nrows=nrows, dtype=dtype)
-            temp.append(df)
-        df = pd.concat(temp)
+            onlyfiles = [f for f in listdir(target) if isfile(join(target, f)) and ".csv" in f]
+            temp = list()
+            for file in onlyfiles:
+                nrows = sys.maxsize
+                df = pd.read_csv(join(target, file), sep=";",
+                                names=headers, parse_dates=['start', 'end'],
+                                low_memory=False,
+                                nrows=nrows, dtype=dtype)
+                temp.append(df)
+            df = pd.concat(temp)
 
-        if df.isnull().values.any():
-            raise ValueError('nan in data frame')
+            if df.isnull().values.any():
+                raise ValueError('nan in data frame')
+        except Exception as e:
+            raise ValueError(f'error on {onlyfiles}') from e
 
         return df
 

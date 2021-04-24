@@ -1,0 +1,551 @@
+# Product
+- description: Awesome Service
+  product: Awesome Service
+  latency_percentile: 0.95
+  leaders:
+  - gregory@owlvey.com
+
+---
+# Journeys
+
+- avaSla: 0.0
+  avaSlo: 0.98
+  description: Personal Loans
+  expSlo: 0.98
+  family: Loans
+  journey: Personal Loans
+  latSla: 0.0
+  latSlo: 1000.0
+  leaders:  
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.98
+  description: Loan Payment
+  expSlo: 0.98
+  family: Loans
+  journey: Loan Payment
+  latSla: 0.0
+  latSlo: 1000.0
+  leaders:  
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Debt Purchase
+  expSlo: 0.99
+  family: Loans
+  journey: Debt Purchase
+  latSla: 0.0
+  latSlo: 1000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Credit Card Sell
+  expSlo: 0.99
+  family: Credit Cards
+  journey: Credit Card Sell
+  latSla: 0.0
+  latSlo: 1000.0
+  leaders:
+  - gregory@owlvey.com 
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Credit Card Payment
+  expSlo: 0.99
+  family: Credit Cards
+  journey: Credit Card Payment
+  latSla: 0.0
+  latSlo: 5000.0
+  leaders:
+  - carol@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Login
+  expSlo: 0.99
+  family: Channels
+  journey: Login
+  latSla: 0.0
+  latSlo: 3000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.98
+  description: Transfers between accounts
+  expSlo: 0.98
+  family: Transfers
+  journey: Transfers between accounts
+  latSla: 0.0
+  latSlo: 5000.0
+  leaders:
+  - gregory@owlvey.com 
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Onboarding
+  expSlo: 0.99
+  family: Channels
+  journey: Onboarding
+  latSla: 0.0
+  latSlo: 3000.0
+  leaders:
+  - gregory@owlvey.com
+
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Credit Card Insurance
+  expSlo: 0.99
+  family: Credit Cards
+  journey: Credit Card Insurance
+  latSla: 0.0
+  latSlo: 2000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Cellphone Transfers
+  expSlo: 0.99
+  family: Fund Transfers
+  journey: Cellphone Transfers
+  latSla: 0.0
+  latSlo: 5000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.98
+  description: Transfer to external bank account
+  expSlo: 0.98
+  family: Fund Transfers
+  journey: Transfer to external bank account
+  latSla: 0.0
+  latSlo: 5000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.98
+  description: Frequent Payment
+  expSlo: 0.98
+  family: Payments
+  journey: Frequent Payment
+  latSla: 0.0
+  latSlo: 5000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.98
+  description: Payment
+  expSlo: 0.98
+  family: Payments
+  journey: Payment
+  latSla: 0.0
+  latSlo: 5000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Dashboard
+  expSlo: 0.99
+  family: Channels
+  journey: Dashboard
+  latSla: 0.0
+  latSlo: 3000.0
+  leaders:
+  - gregory@owlvey.com
+
+- avaSla: 0.0
+  avaSlo: 0.99
+  description: Account Balance
+  expSlo: 0.99
+  family: Channels
+  journey: Account Balance
+  latSla: 0.0
+  latSlo: 3000.0
+  leaders:
+  - gregory@owlvey.com
+
+---
+# Features 
+- description: Generate Personal Loan
+  feature: Generate Personal Loan
+  journeys:
+  - Personal Loans
+  sources:
+  - campaigns/list
+  - campaign/find
+  - gates/query  
+  squads:
+  - Fenix
+
+- description: Loan Payment
+  feature: Loan Payment
+  journeys:
+  - Loan Payment
+  sources:
+  - loans/confirmation  
+  - loans/validation
+  - products/quotas  
+  - products/detail
+  - products/list
+  - users/profiles  
+  - loans/calculation
+  squads:
+  - Fenix
+
+
+- description: Login
+  feature: Login
+  journeys:
+  - Personal Loans
+  - Loan Payment
+  - Debt Purchase
+  - Credit Card Sell
+  - Credit Card Payment
+  - Login
+  - Transfers between accounts
+  - Onboarding
+  - Credit Card Insurance
+  - Cellphone Transfers
+  - Transfer to external bank account
+  - Frequent Payment
+  - Payment
+  - Dashboard
+  - Account Balance  
+  sources:
+  - login/validate  
+  - users/flow
+  - login/sms
+  - login/email
+  squads:
+  - Valkyrie
+
+- description: Dashboard
+  feature: Dashboard
+  journeys:
+  - Personal Loans
+  - Loan Payment
+  - Debt Purchase
+  - Credit Card Sell
+  - Credit Card Payment
+  - Transfers between accounts
+  - Onboarding  
+  - Cellphone Transfers
+  - Transfer to external bank account
+  - Frequent Payment
+  - Payment
+  - Dashboard
+  - Account Balance
+  sources:
+  - users/benefits
+  - campaigns/list
+  - alerts
+  - gates/query  
+  - users/profiles
+  squads:
+  - Valkyrie
+
+- description: Credit Card Payment
+  feature: Credit Card Payment
+  journeys:
+  - Credit Card Payment
+  sources:
+  - creditcard/list  
+  - creditcard/validate  
+  - creditcard/confirm      
+  - products/summary  
+  - banks
+  squads:
+  - Fenix
+
+- description: Campaigns
+  feature: Campaigns
+  journeys:
+  - Debt Purchase
+  - Credit Card Sell
+  sources:
+  - campaigns/list
+  - campaigns/find
+  - products/summary
+  squads:
+  - Fenix
+  - Valkyrie
+
+- description: Balance Transfer
+  feature: Balance Transfer
+  journeys:
+  - Debt Purchase
+  sources:
+  - products/summary
+  - balances/confirm
+  - balances/simulate  
+  squads:
+  - Fenix
+
+- description: Credit Card Sell
+  feature: Credit Card Sell
+  journeys:
+  - Credit Card Sell
+  sources:
+  - acquisitions/validate
+  - acquisitions/confirm
+  - acquisitions/benefits
+  - acquisitions/options
+  - acquisitions/save
+  - acquisitions/detail
+  - acquisitions/list
+  - products/detail
+  - products/summary
+  - acquisitions/shipping
+  - applications/benefits
+  squads:
+  - Fenix
+
+- description: Product Contract
+  feature: Product Contract
+  journeys:
+  - Credit Card Sell
+  sources:
+  - products/contracts
+  squads:
+  - Valkyrie
+
+- description: Tracking
+  feature: Tracking
+  journeys:
+  - Debt Purchase
+  sources:
+  - tracking/query
+  - tracking/detail
+  - tracking/voucher
+  squads:
+  - Valkyrie
+  - Fenix
+
+
+
+- description: Transfers between accounts
+  feature: Transfers between accounts
+  journeys:
+  - Transfers between accounts
+  sources:
+  - transfers/confirmation
+  - transfers/transfer
+  - products/products
+  squads:
+  - Valkyrie
+
+- description: Frequent Payment
+  feature: Frequent Payment
+  journeys:
+  - Frequent Payment
+  sources:
+  - alerts
+  - frequentOperations/modify
+  - frequentOperations/list
+  - frequentOperations/query  
+  - products
+  - transfers/confirmation
+  - transfers/transfer
+  - users/profile
+  squads:
+  - Fenix
+
+- description: Payment
+  feature: Payment
+  journeys:
+  - Payment
+  sources:
+  - frequentOperation/add
+  - frequentOperation/query
+  - payment/institutions
+  - payment/categories
+  - payment/debts
+  - payment/voucher
+  - payment/validate
+  - payment/services
+  - payment/pay
+  - products
+  - user/profile
+  squads:
+  - Valkyrie
+
+- description: Onboarding
+  feature: Onboarding
+  journeys:
+  - Onboarding
+  sources:  
+  - Onboarding/validateUserInformation
+  - Onboarding/verifyOTPCode  
+  - Onboarding/sendOTPCode
+  - Onboarding/registerUser
+  - UserFlow/Flow  
+  squads:
+  - Fenix
+
+- description: Transfers between accounts
+  feature: Transfers between accounts
+  journeys:
+  - Transfers between accounts
+  sources:
+  - FrequentOperation/list
+  - FrequentOperation/query
+  - ProductHome/getProducts
+  - Transfer/transferConfirmation
+  - Transfer/transfer
+  - User/getProfile
+  squads:
+  - Fenix
+
+- description: Cellphone Transfers
+  feature: Cellphone Transfers
+  journeys:
+  - Cellphone Transfers
+  sources:
+  - p2p/confirmTransfer
+  - p2p/getSeed
+  - p2p/attemptTransfer
+  - p2p/getContacts
+  squads:
+  - Fenix
+
+- description: Contacts
+  feature: Contacts
+  journeys:
+  - Cellphone Transfers
+  sources:
+  - p2p/contacts
+  squads:
+  - Fenix
+
+- description: Configurations
+  feature: Configurations
+  journeys:
+  - Cellphone Transfers
+  sources:
+  - p2p/getPayer
+  - p2p/removePayer
+  - p2p/updatePayer
+  squads:
+  - Valkyrie
+
+- description: Frequent Payment
+  feature: Frequent Payment
+  journeys:  
+  - Transfers between accounts
+  - Transfer to external bank account
+  sources:
+  - frequentOperation/modify
+  - frequentOperation/delete
+  - frequentOperation/add
+  - frequentOperation/list
+  - frequentOperation/query
+  squads:
+  - Valkyrie
+
+- description: Transfer to external bank account
+  feature: Transfer to external bank account
+  journeys:
+  - Transfer to external bank account
+  sources:
+  - products  
+  - transfer/transfer
+  squads:
+  - Valkyrie
+
+- description: Configure Dashboard
+  feature: Configure Dashboard
+  journeys:
+  - Dashboard
+  sources:
+  - products
+  - products/settings
+  - users/profile
+  squads:
+  - Fenix
+
+- description: Show and Hide Dashboard Items
+  feature: Show and Hide Dashboard Items
+  journeys:
+  - Dashboard
+  sources:
+  - products
+  - users/profile
+  - users/preferences
+  squads:
+  - Fenix
+
+- description: Account Balance
+  feature: Account Balance
+  journeys:
+  - Account Balance
+  sources:  
+  - products/detail
+  - products/transactions
+  - products
+  - users/profile
+  squads:
+  - Fenix
+
+- description: Credit Card Payment
+  feature: Credit Card Payment
+  journeys:
+  - Credit Card Payment
+  sources:
+  - campaign/list  
+  - product/detail
+  - product/transactions
+  - product/contracts
+  - products
+  - users/profile  
+  squads:
+  - Fenix
+
+- description: Query Personal Loans
+  feature: Query Personal Loans
+  journeys:
+  - Personal Loans
+  sources:
+  - user/benefits
+  - campaign/list
+  - campaign/find
+  - gate/query
+  - loan/simulation
+  - loan/accounts
+  - Loan/disbursement
+  - loanRest/getPaymentSchedule  
+  - products
+  - Template/list
+  - user/getProfile  
+  squads:
+  - Fenix
+
+- description: User Assistant
+  feature: User Assistant
+  journeys:
+  - Transfer to external bank account
+  - Credit Card Payment
+  sources:
+  - assistance
+  squads: 
+  - Fenix
+  
+
+- description: Logout
+  feature: Logout
+  journeys:
+  - Login
+  sources:
+  - Login/logout
+  squads:
+  - Fenix
+

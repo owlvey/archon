@@ -1,3 +1,6 @@
+from engine.core.MemberEntity import MemberEntity
+
+
 class ProductEntity:
 
     def __init__(self):
@@ -9,9 +12,5 @@ class ProductEntity:
     def load_members(self, items):
         temp = self.leaders
         self.leaders = list()
-        for item in temp:            
-            self.leaders.append(next(x for x in items if x.email == item))
-    
-    
-    
-        
+        for item in temp:           
+            self.leaders.append( MemberEntity.find_member(items, item) )        

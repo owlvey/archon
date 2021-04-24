@@ -12,7 +12,8 @@ class InfrastructureEntity:
         self.states = state['states']
         self.visualizations = state['visualizations']
         self.hourly_days = state['hourly_days']
-        self.warning_zone = state['warning_zone']
+        
+        self.warning_zone = state.get('warning_zone', 0)
 
 
 
