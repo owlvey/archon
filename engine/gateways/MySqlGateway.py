@@ -5,7 +5,7 @@ from sqlalchemy import MetaData, Table, String, Column, Text, DateTime, Boolean,
 from sqlalchemy.sql.expression import insert, select
 import sqlalchemy
 import pandas as pd
-
+import logging
 from engine.gateways.ORMMetadata import ORMMetadata
 
 
@@ -14,8 +14,10 @@ class MySqlGateway:
     def __init__(self, user, password, host, port, database) -> None:
         connection = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
         self.metadata_engine = create_engine(connection,
-                                             strategy='mock', executor=self.__metadata_dump)
+                                             strategy='mock',                                              
+                                             executor=self.__metadata_dump)
         self.engine = create_engine(connection)
+        self.logger = logging.getLogger(__class__.__name__)
 
     def create_metadata_storage(self):
         ORMMetadata.metadata.drop_all(self.engine)
@@ -51,7 +53,7 @@ class MySqlGateway:
                 for m in item.members:
                     member_id = self.__get_member(members, m)
                     ins = ORMMetadata.squads_members_table.insert().values(
-                        squadId=r.inserted_primary_key,
+                        squadId=r.inserted_primary_key[0],
                         memberId=member_id)
                     self.engine.execute(ins)
 
@@ -67,14 +69,19 @@ class MySqlGateway:
             raise ValueError(f'member not found {target}') from e
 
     def post_product(self, value):        
-        members = list(self.engine.execute(ORMMetadata.members_table.select()).fetchall())
-        r = self.engine.execute(insert(ORMMetadata.products_table), MySqlGateway.__prepare_no_list(value))
-        for m in value.leaders:
-            member_id = self.__get_member(members, m)
-            ins = ORMMetadata.product_members_table.insert().values(
-                productId=r.inserted_primary_key,
-                memberId=member_id)
-            self.engine.execute(ins)
+        try:
+            members = list(self.engine.execute(ORMMetadata.members_table.select()).fetchall())
+            ins = ORMMetadata.products_table.insert().values(MySqlGateway.__prepare_no_list(value))
+            r = self.engine.execute(ins)        
+            self.logger.info(r.inserted_primary_key)    
+            for m in value.leaders:
+                member_id = self.__get_member(members, m)
+                ins = ORMMetadata.product_members_table.insert().values(
+                    productId=r.inserted_primary_key[0],
+                    memberId=member_id)                
+                self.engine.execute(ins)
+        except Exception as e:            
+            raise ValueError(f"Product Insert  {value} , Member:{ins} , {r.inserted_primary_key}, {member_id}") from e
 
     def post_journeys(self, values: list):
         if values:

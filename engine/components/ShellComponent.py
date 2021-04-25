@@ -36,9 +36,9 @@ class ShellComponent:
         infrastructure, product, members, squads, journeys, features = self.file_gateway.read_metadata()
         self.system_entity.load_state(infrastructure, product, members, squads, journeys, features)        
 
-    def __save_metadata(self):        
+    def __save_metadata(self):                
         for gateway in self.states_gateways:
-            # members first
+            # members first            
             gateway.post_members(self.system_entity.members)
             gateway.post_product(self.system_entity.product)
             gateway.post_squads(self.system_entity.squads)
@@ -84,6 +84,7 @@ class ShellComponent:
         monthly_squads, monthly_journey, monthly_features, monthly_source = agg_slo.execute()
 
         for gateway in self.states_gateways:
+
             gateway.post_data(monthly_journey, 'MonthlyJourney', index_names=['journey', 'feature', 'source', 'start'])
             gateway.post_data(monthly_features, 'MonthlyFeature', index_names=['feature', 'source', 'start'])
             gateway.post_data(monthly_source, 'MonthlySource', index_names=['source', 'start'])

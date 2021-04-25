@@ -6,7 +6,7 @@ pandas
 yamale
 pymysql
 mysql-connector-python
-sqlalchemy
+sqlalchemy==1.3.5
 flask
 requests
 Flask-APScheduler

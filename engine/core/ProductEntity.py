@@ -14,3 +14,7 @@ class ProductEntity:
         self.leaders = list()
         for item in temp:           
             self.leaders.append( MemberEntity.find_member(items, item) )        
+    
+    def __str__(self) -> str:
+        return "Product Entity {} {} {}".format(self.product, self.description, self.leaders)
+

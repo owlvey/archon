@@ -10,6 +10,7 @@ from engine.components.ShellComponent import ShellComponent
 
 log_level = os.environ.get("OWLVEY_LOGGING", logging.WARNING)
 logging.basicConfig(level=log_level)
+#logging.getLogger('sqlalchemy.engine').setLevel(log_level)
 
 class Config(object):
     SCHEDULER_API_ENABLED = True
@@ -34,18 +35,6 @@ def sync_job():
         logger.warning('sync_job completed')
     except Exception as e:
         logger.exception(e)
-    
-@scheduler.task('interval', id='health_job', seconds=10, misfire_grace_time=60)
-def health_job():
-    logger.info('health_job at {}'.format(datetime.now()))            
-    try:
-        shell = ShellComponent()
-        shell.health()            
-        logger.info('health_job completed')
-    except Exception as e:
-        logger.warning(f'health_job error {str(e)}')
-        logger.exception(e)
-    
    
 
 if __name__ == "__main__":     

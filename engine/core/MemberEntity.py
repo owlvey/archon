@@ -4,6 +4,8 @@ class MemberEntity:
         self.email = None
         self.name = None    
         self.nickname = None
+    
+    
 
     @staticmethod
     def find_member(items, target):
