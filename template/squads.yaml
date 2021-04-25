@@ -1,8 +1,8 @@
 - description: Fenix
   leaders:
-  - juan@owlvey.com
+  - luis@owlvey.com
   members:
-  - juan@owlvey.com
+  - gregory@owlvey.com
   - luis@owlvey.com
   - maria@owlvey.com
   - ana@owlvey.com  
@@ -14,6 +14,15 @@
   members:
   - jhon@owlvey.com
   - carol@owlvey.com
-  - steve@owlvey.com  
+  - alex@owlvey.com 
   squad: Valkyrie
+
+- description: Valkyrie  
+  leaders:
+  - tracy@owlvey.com
+  members:
+  - tracy@owlvey.com
+  - niki@owlvey.com
+  - steve@owlvey.com 
+  squad: NightWatch
   

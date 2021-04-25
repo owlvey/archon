@@ -7,6 +7,7 @@ from engine.core.SquadEntity import squads_to_features_dataframe
 from engine.core.FeatureEntity import features_to_indicators_dataframe
 import pandas as pd
 import numpy as np
+import statistics
 from datetime import  datetime, timedelta
 
 
@@ -69,11 +70,22 @@ class DebtAnalysisAggregate:
         return monthly_squads, monthly_journey, monthly_features, monthly_source
 
     @staticmethod
+    def mean_x(values):
+        if values is None or len(values) == 0:
+            return 0        
+        temp = [y for y in values if y > 0]
+        if not temp: 
+            return 0
+        return statistics.mean(temp)
+        
+
+    @staticmethod
     def generate_monthly_pivot(key_column, metric, monthly_data: pd.DataFrame):
         target = monthly_data.copy()
         target['start'] = target['start'].dt.strftime('%Y-%m')
-        monthly_pivot = target[target[metric] > 0].groupby([key_column, 'start']).agg(
-            {metric: 'mean'}).reset_index().pivot(
+        # use only debt values 
+        monthly_pivot = target.groupby([key_column, 'start']).agg(
+            { metric: DebtAnalysisAggregate.mean_x } ).reset_index().pivot(
             index=key_column, columns='start', values=metric
         ).reset_index().fillna(0).reset_index()
         names = list(monthly_pivot.columns)

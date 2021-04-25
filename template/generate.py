@@ -49,8 +49,8 @@ if __name__ == "__main__":
     while end < datetime.now():    
         for s in sources:            
             total = randint(10, 100000)
-            ava = round(total * gauss(s.avaSlo, 0.001))            
-            exp = round(total * gauss(s.expSlo, 0.001))            
+            ava = round(total * gauss(s.avaSlo + (1 - s.avaSlo) * 0.1, 0.01))            
+            exp = round(total * gauss(s.expSlo + (1 - s.expSlo) * 0.1, 0.01))            
             lat = round(gauss(s.latSlo, 100), 0)            
             data.append([s.source, 
                 start.strftime("%Y-%m-%d %H:%M:%S"),

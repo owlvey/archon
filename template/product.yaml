@@ -112,7 +112,7 @@
   avaSlo: 0.99
   description: Cellphone Transfers
   expSlo: 0.99
-  family: Fund Transfers
+  family: Transfers
   journey: Cellphone Transfers
   latSla: 0.0
   latSlo: 5000.0
@@ -123,7 +123,7 @@
   avaSlo: 0.98
   description: Transfer to external bank account
   expSlo: 0.98
-  family: Fund Transfers
+  family: Transfers
   journey: Transfer to external bank account
   latSla: 0.0
   latSlo: 5000.0
@@ -185,7 +185,7 @@
   - campaign/find
   - gates/query  
   squads:
-  - Fenix
+  - NightWatch
 
 - description: Loan Payment
   feature: Loan Payment
@@ -200,7 +200,7 @@
   - users/profiles  
   - loans/calculation
   squads:
-  - Fenix
+  - NightWatch
 
 
 - description: Login
