@@ -3,6 +3,7 @@
         "statusBar.background": "#05c7e9",
         "statusBar.noFolderBackground":"#05c7e9",
         "statusBar.debuggingBackground":"#05c7e9",
-    }
+    },
+    "python.testing.unittestEnabled": true
   }
   
