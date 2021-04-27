@@ -59,7 +59,7 @@
   family: Credit Cards
   journey: Credit Card Payment
   latSla: 0.0
-  latSlo: 5000.0
+  latSlo: 2000.0
   leaders:
   - carol@owlvey.com
 
@@ -70,7 +70,7 @@
   family: Channels
   journey: Login
   latSla: 0.0
-  latSlo: 3000.0
+  latSlo: 1500.0
   leaders:
   - gregory@owlvey.com
 
@@ -81,7 +81,7 @@
   family: Transfers
   journey: Transfers between accounts
   latSla: 0.0
-  latSlo: 5000.0
+  latSlo: 2000.0
   leaders:
   - gregory@owlvey.com 
 
@@ -92,7 +92,7 @@
   family: Channels
   journey: Onboarding
   latSla: 0.0
-  latSlo: 3000.0
+  latSlo: 1000.0
   leaders:
   - gregory@owlvey.com
 
@@ -115,7 +115,7 @@
   family: Transfers
   journey: Cellphone Transfers
   latSla: 0.0
-  latSlo: 5000.0
+  latSlo: 2000.0
   leaders:
   - gregory@owlvey.com
 
@@ -126,7 +126,7 @@
   family: Transfers
   journey: Transfer to external bank account
   latSla: 0.0
-  latSlo: 5000.0
+  latSlo: 2000.0
   leaders:
   - gregory@owlvey.com
 
@@ -137,7 +137,7 @@
   family: Payments
   journey: Frequent Payment
   latSla: 0.0
-  latSlo: 5000.0
+  latSlo: 2000.0
   leaders:
   - gregory@owlvey.com
 
@@ -148,7 +148,7 @@
   family: Payments
   journey: Payment
   latSla: 0.0
-  latSlo: 5000.0
+  latSlo: 2000.0
   leaders:
   - gregory@owlvey.com
 
@@ -159,7 +159,7 @@
   family: Channels
   journey: Dashboard
   latSla: 0.0
-  latSlo: 3000.0
+  latSlo: 1000.0
   leaders:
   - gregory@owlvey.com
 
@@ -170,7 +170,7 @@
   family: Channels
   journey: Account Balance
   latSla: 0.0
-  latSlo: 3000.0
+  latSlo: 2000.0
   leaders:
   - gregory@owlvey.com
 

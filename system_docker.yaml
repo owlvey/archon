@@ -10,7 +10,7 @@
       target: /workspace/data
   states:
     - type: mysql
-      host: 192.168.1.36
+      host: owlvey_state
       port: 3306
       user: root
       password: thefalcon123
